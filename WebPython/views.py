@@ -3,17 +3,17 @@ Routes and views for the flask application.
 """
 
 from datetime import datetime
-from flask import render_template, request, redirect
-from WebPython import app
+from flask import render_template, request, redirect, Flask
 from flask_mysqldb import MySQL
 import json
 
+app = Flask(__name__)
+mysql = MySQL(app)
 app.config['MYSQL_HOST'] = "localhost"
 app.config['MYSQL_USER'] = "HostLokal"
 app.config['MYSQL_PASSWORD'] = "Azzar-1002"
 app.config['MYSQL_DB'] = "gns"
 
-mysql = MySQL(app)
 
 @app.route('/')
 @app.route('/home')
@@ -75,7 +75,6 @@ def lanjut():
     pesanan = request.args.get('pesanan')
     jumlahpesan = request.args.get('jumlahpesan')
     alamat = request.args.get('alamat')
-    teks = "Saya Tertarik Dengan Produk Anda"
     if wilayah == "Tambun":
         return redirect("https://api.whatsapp.com/send?phone=6285641845879&text=Saya%20Tertarik%20Dengan%20Produk%20Anda%20{}%0ANomor%20Hp%20Saya:%20{}%0AJumlah%20Pesanan:%20{}%0AWilayah:%20{}%0AAlamat:%20{}".format(pesanan,nohp,jumlahpesan,wilayah,alamat),302) 
     elif wilayah == "Jatiasih":
@@ -86,3 +85,6 @@ def lanjut():
         return redirect("https://api.whatsapp.com/send?phone=6281617351983&text=Saya%20Tertarik%20Dengan%20Produk%20Anda%20{}%0ANomor%20Hp%20Saya:%20{}%0AJumlah%20Pesanan:%20{}%0AWilayah:%20{}%0AAlamat:%20{}".format(pesanan,nohp,jumlahpesan,wilayah,alamat),302)
     else:
         return "Salah"
+
+if __name__ == "__main__":
+    app.run()
